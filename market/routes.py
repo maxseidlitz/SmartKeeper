@@ -1,6 +1,6 @@
 from market import app
 from flask import render_template, redirect, url_for, flash, request
-from market.models import Item, User
+from market.models import Item, User, Drink, Ingredient, Map
 from market.forms import RegisterForm, LoginForm, PurchaseItemForm, SellItemForm
 from market import db
 from flask_login import login_user, logout_user, login_required, current_user
@@ -18,11 +18,11 @@ def market_page(): #drinks_page
     if request.method == "POST":
         #Purchase Item
         purchased_item = request.form.get("purchased_item")
-        p_item_object = Item.query.filter_by(name=purchased_item).first()
+        p_item_object = Drink.query.filter_by(name=purchased_item).first()
         if p_item_object:
             if current_user.can_purchase(p_item_object):
-                p_item_object.buy(current_user)
-                flash(f"Congratulations! Your purchased {p_item_object.name} for {p_item_object.price} $", category="success")
+                #p_item_object.buy(current_user)
+                flash(f"Congratulations! Your purchased {p_item_object.name}", category="success")
             else: 
                 flash(f"Unfortunately, you don't have enough money to purchase {p_item_object.name}!", category="danger")
         #Sell Item
@@ -38,9 +38,12 @@ def market_page(): #drinks_page
         return redirect(url_for('market_page'))
     
     if request.method == "GET":
+        drinks = Drink.query.order_by(Drink.id.asc()).all()
+        list = db.session.query(Drink, Ingredient, Map).filter(Drink.id == Map.drinkID).filter(Map.ingredientID == Ingredient.id).order_by(Drink.id.asc()).all()  
+
         items = Item.query.filter_by(owner=None)
         owned_items= Item.query.filter_by(owner=current_user.id)
-        return render_template("market.html", items=items, purchase_form=purchase_form, owned_items=owned_items, selling_form=selling_form) # drinks.html
+        return render_template("market.html", items=items, list=list, drinks=drinks, purchase_form=purchase_form, owned_items=owned_items, selling_form=selling_form) # drinks.html
 
 @app.route("/register", methods=["GET", "POST"])
 def register_page():

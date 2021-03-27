@@ -33,7 +33,7 @@ class User(db.Model, UserMixin):
         return bcrypt.check_password_hash(self.password_hash, attempted_password)
     
     def can_purchase(self, item_obj):
-        return self.budget >= item_obj.price
+        return True #self.budget >= item_obj.price
 
     def can_sell(self, sell_obj):
         return sell_obj in self.items
@@ -58,3 +58,29 @@ class Item(db.Model):
         self.owner = None
         user.budget += self.price
         db.session.commit()
+
+class Drink(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    name = db.Column(db.String(length=30), nullable=False, unique=True)
+    description = db.Column(db.String(length=1024), nullable=False)
+    mapping = db.relationship("Map", backref="drink", lazy=True)
+    
+    def __repr__(self):
+        return f'Drink {self.id}, {self.name}, {self.description}'
+class Ingredient(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    name = db.Column(db.String(length=30), nullable=False)
+    percentage = db.Column(db.String(length=30), nullable=False)
+    mapping = db.relationship("Map", backref="ingredient", lazy=True)
+
+    def __repr__(self):
+        return f'Ingredient {self.id}, {self.name}, {self.percentage}'
+
+class Map(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    ratio = db.Column(db.Integer(), nullable=False)
+    drinkID = db.Column(db.Integer(), db.ForeignKey('drink.id'), nullable=False)
+    ingredientID = db.Column(db.Integer(), db.ForeignKey('ingredient.id'), nullable=False)
+
+    def __repr__(self):
+        return f'Map {self.id}, {self.ratio}, {self.drinkID}, {self.ingredientID}'

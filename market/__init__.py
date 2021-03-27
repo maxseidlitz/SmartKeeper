@@ -5,7 +5,6 @@ from flask_login import LoginManager
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///market.db' #uniform resource identifier
-
 #edit secret key to run application
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
