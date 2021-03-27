@@ -22,19 +22,17 @@
                 </button>
             </div>
             <div class="modal-body">
-                <br>
-
-                {% for drink, ingredient, map in list %}
-                    {% if drink.id %}
-                        <h4>{{ ingredient.name }}</h4>
-                        <br>
-                        <h5>Percentage:</h5>
-                        <a>{{ ingredient.percentage }}</a>
-                        <br>
-                        <br>
-                        <h5>Ratio:</h5>
-                        <a>{{ map.ratio }}</a>
-                    {% endif %}
+                <br>   
+                <!-- {{ checkIngredient(drink.id) }} -->               
+                {% for ingredient in arr %}
+                    <h4>{{ ingredient.name }}</h4>
+                    <br>
+                    <h5>Percentage:</h5>
+                    <a>{{ ingredient.percentage }}</a>
+                    <br>
+                    <br>
+                    <h5>Ratio:</h5>
+                    <a>{{ map.ratio }}</a>
                 {% endfor %}
 
             </div>
