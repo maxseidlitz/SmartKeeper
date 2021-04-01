@@ -15,25 +15,23 @@ Drink List Page
           <!-- Your Columns HERE -->
           <th scope="col">ID</th>
           <th scope="col">Name</th>
-          <th scope="col">Barcode</th>
-          <th scope="col">Price</th>
+          <th scope="col">Description</th>
           <th scope="col">Options</th>
         </tr>
       </thead>
       <tbody>
         <!-- Your rows inside the table HERE: -->
-        {% for item in items %}
-        {% include 'includes/items_modals.html' %}
+        {% for drink in drinks %}
+        {% include 'includes/drink_modals.html' %}
         <tr>
-          <td>{{ item.id }}</td>
-          <td>{{ item.name }}</td>
-          <td>{{ item.barcode }}</td>
-          <td>{{ item.price }}$</td>
+          <td>{{ drink.id }}</td>
+          <td>{{ drink.name }}</td>
+          <td>{{ drink.description }}</td>
           <td>
             <button class="btn btn-outline btn-info" data-toggle="modal"
-              data-target="#Modal-MoreInfo-{{ item.id }}">More Info</button>
+              data-target="#Modal-MoreInfo-{{ drink.id }}">More Info</button>
             <button class="btn btn-outline btn-success" data-toggle="modal"
-              data-target="#Modal-PurchaseConfirm-{{ item.id }}">Produce this Drink</button>
+              data-target="#Modal-PurchaseConfirm-{{ drink.id }}">Produce this Drink</button>
           </td>
         </tr>
         {% endfor %}
@@ -41,28 +39,8 @@ Drink List Page
     </table>
   </div>
   <div class="col-4">
-    <h2>Owned Items</h2>
-    <p>Click on sell item to put an item back on the Market</p>
-    <br>
-    <div class="row">
-      {% for owned_item in owned_items %}
-      {% include 'includes/owned_items_modals.html' %}
-        <div class="col-md-6">
-          <div style="margin-bottom: 5px" class="card text-center bg-dark">
-            <div class="card-body">
-              <h5 class="card-title">{{ owned_items.name }}</h5>
-              <button type="button" class="btn btn-outline-danger" style="margin-bottom: 5px" data-toggle="modal"
-                data-target="#Modal-SellingConfirm-{{ owned_item.id }}">
-                Sell this Item
-              </button>
-              <p class="card-text"><strong>
-                This item costs {{ owned_item.price }}$
-                </strong></p>
-            </div>
-          </div>
-        </div>
-      {% endfor %}
-    </div>
+    <h2>Container 2</h2>
+    <p>Anything to put in here?</p>
   </div>
 </div>
 {% endblock %}

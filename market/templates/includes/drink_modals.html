@@ -2,24 +2,38 @@
     .modal-content {
         background-color: #212121
     }
+    a {
+        text-align: center;
+    }
 </style>
 
 <!-- More Info -->
-<div class="modal fade" id="Modal-MoreInfo-{{ item.id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="Modal-MoreInfo-{{ drink.id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="ModalLabel">
                     <!-- -->
-                    {{ item.name }}
+                    {{ drink.name }}
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                {{ item.description }}
+                <br>                  
+                {% for ingredient in arr %}
+                    <h4>{{ ingredient.name }}</h4>
+                    <br>
+                    <h5>Percentage:</h5>
+                    <a>{{ ingredient.percentage }}</a>
+                    <br>
+                    <br>
+                    <h5>Ratio:</h5>
+                    <a>{{ map.ratio }}</a>
+                {% endfor %}
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
@@ -30,14 +44,14 @@
 </div>
 
 <!-- Purchase Confirm -->
-<div class="modal fade" id="Modal-PurchaseConfirm-{{ item.id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="Modal-PurchaseConfirm-{{ drink.id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="ModalLabel">
                     <!-- -->
-                    {{ item.name }}
+                    {{ drink.name }}
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -45,18 +59,18 @@
             </div>
             <div class="modal-body">
                 <form method='POST'>
-                    {{ purchase_form.hidden_tag() }}
+                    {{ mix_form.hidden_tag() }}
 
                     <h4 class='text-center'>
-                        Are you sure you want to buy {{ item.name }} for {{ item.price }}$ ?
+                        Are you sure you want to drink {{ drink.name }}?
                     </h4>
                     <br>
                     <h6 class='text-center'>
-                        By clicking Purchase, you will purchase this item.
+                        By clicking "Mix it!", you will mix this drink.
                     </h6>
                     <br>
-                    <input id="purchased_item" name="purchased_item" type="hidden" value="{{ item.name }}">
-                    {{ purchase_form.submit(class='btn btn-outline-success btn-block') }}
+                    <input id="purchased_drink" name="purchased_drink" type="hidden" value="{{ drink.name }}">
+                    {{ mix_form.submit(class='btn btn-outline-success btn-block') }}
                 </form>
             </div>
             <div class="modal-footer">
