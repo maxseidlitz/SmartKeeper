@@ -22,8 +22,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <br>   
-                <!-- {{ checkIngredient(drink.id) }} -->               
+                <br>                  
                 {% for ingredient in arr %}
                     <h4>{{ ingredient.name }}</h4>
                     <br>
@@ -60,7 +59,7 @@
             </div>
             <div class="modal-body">
                 <form method='POST'>
-                    {{ purchase_form.hidden_tag() }}
+                    {{ mix_form.hidden_tag() }}
 
                     <h4 class='text-center'>
                         Are you sure you want to drink {{ drink.name }}?
@@ -70,8 +69,8 @@
                         By clicking "Mix it!", you will mix this drink.
                     </h6>
                     <br>
-                    <input id="purchased_item" name="purchased_item" type="hidden" value="{{ drink.name }}">
-                    {{ purchase_form.submit(class='btn btn-outline-success btn-block') }}
+                    <input id="purchased_drink" name="purchased_drink" type="hidden" value="{{ drink.name }}">
+                    {{ mix_form.submit(class='btn btn-outline-success btn-block') }}
                 </form>
             </div>
             <div class="modal-footer">

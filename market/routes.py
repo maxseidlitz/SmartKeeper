@@ -1,7 +1,7 @@
 from market import app
 from flask import render_template, redirect, url_for, flash, request
-from market.models import Item, User, Drink, Ingredient, Map
-from market.forms import RegisterForm, LoginForm, PurchaseItemForm, SellItemForm
+from market.models import User, Drink, Ingredient, Map
+from market.forms import RegisterForm, LoginForm, MixDrinkForm
 from market import db
 from flask_login import login_user, logout_user, login_required, current_user
 
@@ -13,37 +13,42 @@ def home_page():
 @app.route("/market", methods=["GET", "POST"]) # drinks
 @login_required
 def market_page(): #drinks_page
-    purchase_form = PurchaseItemForm()
-    selling_form = SellItemForm()
+    mix_form = MixDrinkForm()
+    #selling_form = SellItemForm()
     if request.method == "POST":
         #Purchase Item
-        purchased_item = request.form.get("purchased_item")
-        p_item_object = Drink.query.filter_by(name=purchased_item).first()
-        if p_item_object:
-            if current_user.can_purchase(p_item_object):
+        mixed_drink = request.form.get("purchased_drink")
+        m_drink = Drink.query.filter_by(name=mixed_drink).first()
+        if m_drink:
+            if current_user.can_purchase(m_drink):
                 #p_item_object.buy(current_user)
-                flash(f"Congratulations! Your purchased {p_item_object.name}", category="success")
-            else: 
-                flash(f"Unfortunately, you don't have enough money to purchase {p_item_object.name}!", category="danger")
-        #Sell Item
-        sold_item = request.form.get('sold_item')
-        s_item_object = Item.query.filter_by(name=sold_item).first()
-        if s_item_object:
-            if current_user.can_sell(s_item_object):
-                s_item_object.sell(current_user)
-                flash(f"Congratulations! Your sold {s_item_object.name} for {s_item_object.price} $ back to market!", category="success")
-            else: 
-                flash(f"Unfortunately, something went wrong with selling {s_item_object.name}!", category="danger")
+                #try:
 
-        return redirect(url_for('market_page'))
+                flash(f"Congratulations! Your drink {m_drink.name} will be mixed!", category="success")
+
+                Drink.mix_drink(m_drink)
+
+            else: 
+                flash(f"Unfortunately, the bartender can't proceed mixin' the {m_drink.name}!", category="danger")
+        #Sell Item
+        # sold_item = request.form.get('sold_item')
+        # s_item_object = Item.query.filter_by(name=sold_item).first()
+        # if s_item_object:
+        #     if current_user.can_sell(s_item_object):
+        #         s_item_object.sell(current_user)
+        #         flash(f"Congratulations! Your sold {s_item_object.name} for {s_item_object.price} $ back to market!", category="success")
+        #     else: 
+        #         flash(f"Unfortunately, something went wrong with selling {s_item_object.name}!", category="danger")
+
+        # return redirect(url_for('market_page'))
     
     if request.method == "GET":
         drinks = Drink.query.order_by(Drink.id.asc()).all()
         list = db.session.query(Drink, Ingredient, Map).filter(Drink.id == Map.drinkID).filter(Map.ingredientID == Ingredient.id).order_by(Drink.id.asc()).all()  
 
-        items = Item.query.filter_by(owner=None)
-        owned_items= Item.query.filter_by(owner=current_user.id)
-        return render_template("market.html", items=items, list=list, drinks=drinks, purchase_form=purchase_form, owned_items=owned_items, selling_form=selling_form) # drinks.html
+        #items = Item.query.filter_by(owner=None)
+        #owned_items= Item.query.filter_by(owner=current_user.id)
+        return render_template("market.html", list=list, drinks=drinks, mix_form=mix_form) # drinks.html | owned_items=owned_items, items=items, selling_Form=selling_Form
 
 @app.route("/register", methods=["GET", "POST"])
 def register_page():

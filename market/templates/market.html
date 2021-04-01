@@ -22,7 +22,7 @@ Drink List Page
       <tbody>
         <!-- Your rows inside the table HERE: -->
         {% for drink in drinks %}
-        {% include 'includes/items_modals.html' %}
+        {% include 'includes/drink_modals.html' %}
         <tr>
           <td>{{ drink.id }}</td>
           <td>{{ drink.name }}</td>
@@ -39,28 +39,8 @@ Drink List Page
     </table>
   </div>
   <div class="col-4">
-    <h2>Owned Items</h2>
-    <p>Click on sell item to put an item back on the Market</p>
-    <br>
-    <div class="row">
-      {% for owned_item in owned_items %}
-      {% include 'includes/owned_items_modals.html' %}
-        <div class="col-md-6">
-          <div style="margin-bottom: 5px" class="card text-center bg-dark">
-            <div class="card-body">
-              <h5 class="card-title">{{ owned_items.name }}</h5>
-              <button type="button" class="btn btn-outline-danger" style="margin-bottom: 5px" data-toggle="modal"
-                data-target="#Modal-SellingConfirm-{{ owned_item.id }}">
-                Sell this Item
-              </button>
-              <p class="card-text"><strong>
-                This item costs {{ owned_item.price }}$
-                </strong></p>
-            </div>
-          </div>
-        </div>
-      {% endfor %}
-    </div>
+    <h2>Container 2</h2>
+    <p>Anything to put in here?</p>
   </div>
 </div>
 {% endblock %}

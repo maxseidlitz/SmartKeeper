@@ -1,6 +1,13 @@
 from market import db, login_manager
 from market import bcrypt
 from flask_login import UserMixin
+import RPi.GPIO as GPIO
+import time
+
+GPIO.setmode(GPIO.BCM)
+FLOW_RATE = 150/60
+MAX_TIME = 0
+GLAS = 300
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -11,8 +18,6 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(length=30), nullable=False, unique=True)
     email_address = db.Column(db.String(length=50), nullable=False, unique=True)
     password_hash = db.Column(db.String(length=60), nullable=False)
-    budget = db.Column(db.Integer(), nullable=False, default=1000)
-    items = db.relationship('Item', backref='owned_user', lazy=True)
 
     @property
     def prettier_budget(self):
@@ -32,32 +37,32 @@ class User(db.Model, UserMixin):
     def check_password_correction(self, attempted_password):
         return bcrypt.check_password_hash(self.password_hash, attempted_password)
     
-    def can_purchase(self, item_obj):
+    def can_purchase(self, drink_obj):
         return True #self.budget >= item_obj.price
 
-    def can_sell(self, sell_obj):
-        return sell_obj in self.items
+    # def can_sell(self, sell_obj):
+    #     return sell_obj in self.items
 
-class Item(db.Model):
-    id = db.Column(db.Integer(), primary_key=True)
-    name = db.Column(db.String(length=30), nullable=False, unique=True)
-    price = db.Column(db.Integer(), nullable=False)
-    barcode = db.Column(db.String(length=12), nullable=False, unique=True)
-    description = db.Column(db.String(length=1024), nullable=False, unique=True)
-    owner = db.Column(db.Integer(), db.ForeignKey('user.id'))
+# class Item(db.Model):
+#     id = db.Column(db.Integer(), primary_key=True)
+#     name = db.Column(db.String(length=30), nullable=False, unique=True)
+#     price = db.Column(db.Integer(), nullable=False)
+#     barcode = db.Column(db.String(length=12), nullable=False, unique=True)
+#     description = db.Column(db.String(length=1024), nullable=False, unique=True)
+#     owner = db.Column(db.Integer(), db.ForeignKey('user.id'))
 
-    def __repr__(self):
-        return f'Item {self.name}'
+#     def __repr__(self):
+#         return f'Item {self.name}'
 
-    def buy(self, user):
-        self.owner = user.id
-        user.budget -= self.price
-        db.session.commit()
+#     def buy(self, user):
+#         self.owner = user.id
+#         user.budget -= self.price
+#         db.session.commit()
 
-    def sell(self, user):
-        self.owner = None
-        user.budget += self.price
-        db.session.commit()
+#     def sell(self, user):
+#         self.owner = None
+#         user.budget += self.price
+#         db.session.commit()
 
 class Drink(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
@@ -67,14 +72,34 @@ class Drink(db.Model):
     
     def __repr__(self):
         return f'Drink {self.id}, {self.name}, {self.description}'
+
+    def mix_drink(m_drink):
+        # mdrink = Drink.query.filter_by(name=m_drink).first().id
+        mdrinks  = Drink.query.filter_by(name=m_drink).first()
+        print(m_drink)
+        ingList = db.session.query(Ingredient.pump, Ingredient.name, Map.ratio).filter(Map.drinkID==mdrinks .id).filter(Ingredient.id==Map.ingredientID).all()
+        print(ingList)
+        # for ing in ingList:
+        #     GPIO.setup(ingredient.pump, GPIO.OUT)
+
+        # for ing in ingList:
+        #     max_ml = GLAS * map.ratio / 100 # 100 ml von 300 ml
+        #     waitTime = max_ml / FLOW_RATE
+        #     GPIO.output(ingredient.pump, GPIO.HIGH)
+        #     time.sleep(waitTime)
+        
+        return flash(f'Congratulations your drink is ready ALLA!', category=success)
+        
+#db.session.query(Ingredient.pump).filter(Map.drinkID==2).all()
 class Ingredient(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(length=30), nullable=False)
-    percentage = db.Column(db.String(length=30), nullable=False)
+    percentage = db.Column(db.Integer(), nullable=False)
+    pump = db.Column(db.Integer(), nullable=False)
     mapping = db.relationship("Map", backref="ingredient", lazy=True)
 
     def __repr__(self):
-        return f'Ingredient {self.id}, {self.name}, {self.percentage}'
+        return f'Ingredient {self.id}, {self.name}, {self.percentage}, {self.pump}'
 
 class Map(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
