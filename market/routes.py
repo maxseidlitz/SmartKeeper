@@ -10,6 +10,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 def home_page():
     return render_template("home.html")
 
+
 @app.route("/market", methods=["GET", "POST"]) # drinks
 @login_required
 def market_page(): #drinks_page
@@ -26,21 +27,9 @@ def market_page(): #drinks_page
 
                 flash(f"Congratulations! Your drink {m_drink.name} will be mixed!", category="success")
 
-                Drink.mix_drink(m_drink)
-
-            else: 
-                flash(f"Unfortunately, the bartender can't proceed mixin' the {m_drink.name}!", category="danger")
-        #Sell Item
-        # sold_item = request.form.get('sold_item')
-        # s_item_object = Item.query.filter_by(name=sold_item).first()
-        # if s_item_object:
-        #     if current_user.can_sell(s_item_object):
-        #         s_item_object.sell(current_user)
-        #         flash(f"Congratulations! Your sold {s_item_object.name} for {s_item_object.price} $ back to market!", category="success")
-        #     else: 
-        #         flash(f"Unfortunately, something went wrong with selling {s_item_object.name}!", category="danger")
-
-        # return redirect(url_for('market_page'))
+                m_drink.mix_drink()
+                
+                return redirect(url_for('market_page'))
     
     if request.method == "GET":
         drinks = Drink.query.order_by(Drink.id.asc()).all()
