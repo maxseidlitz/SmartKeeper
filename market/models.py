@@ -73,22 +73,27 @@ class Drink(db.Model):
     def __repr__(self):
         return f'Drink {self.id}, {self.name}, {self.description}'
 
-    def mix_drink(m_drink):
-        # mdrink = Drink.query.filter_by(name=m_drink).first().id
-        mdrinks  = Drink.query.filter_by(name=m_drink).first()
-        print(m_drink)
-        ingList = db.session.query(Ingredient.pump, Ingredient.name, Map.ratio).filter(Map.drinkID==mdrinks .id).filter(Ingredient.id==Map.ingredientID).all()
-        print(ingList)
-        # for ing in ingList:
-        #     GPIO.setup(ingredient.pump, GPIO.OUT)
+    # def mix_drink(m_drink):
+    #     # mdrink = Drink.query.filter_by(name=m_drink).first().id
+    #     mdrinks  = Drink.query.filter_by(name=m_drink).first()
+    #     print(m_drink)
+    #     ingList = db.session.query(Ingredient.pump, Ingredient.name, Map.ratio).filter(Map.drinkID==mdrinks .id).filter(Ingredient.id==Map.ingredientID).all()
+    #     print(ingList)
 
-        # for ing in ingList:
-        #     max_ml = GLAS * map.ratio / 100 # 100 ml von 300 ml
-        #     waitTime = max_ml / FLOW_RATE
-        #     GPIO.output(ingredient.pump, GPIO.HIGH)
-        #     time.sleep(waitTime)
+    def mix_drink(self):
+        ingList = db.session.query(Ingredient.pump, Ingredient.name, Map.ratio).filter(Map.drinkID==self.id).filter(Ingredient.id==Map.ingredientID).all()
+        print(ingList)
+        for ing in ingList:
+            GPIO.setup(ing[0], GPIO.OUT)
+
+        for ing in ingList:
+            max_ml = GLAS * ing[2] / 100 # 100 ml von 300 ml
+            waitTime = max_ml / FLOW_RATE
+            GPIO.output(ing[0], GPIO.HIGH)
+            time.sleep(waitTime)
+            GPIO.output(ing[0], GPIO.LOW)
         
-        return flash(f'Congratulations your drink is ready ALLA!', category=success)
+        return flash(f'Congratulations your drink is ready ALLA!', category="success")
         
 #db.session.query(Ingredient.pump).filter(Map.drinkID==2).all()
 class Ingredient(db.Model):

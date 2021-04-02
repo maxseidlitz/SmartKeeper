@@ -10,6 +10,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 def home_page():
     return render_template("home.html")
 
+
 @app.route("/market", methods=["GET", "POST"]) # drinks
 @login_required
 def market_page(): #drinks_page
@@ -26,7 +27,7 @@ def market_page(): #drinks_page
 
                 flash(f"Congratulations! Your drink {m_drink.name} will be mixed!", category="success")
 
-                Drink.mix_drink(m_drink)
+                m_drink.mix_drink():
 
             else: 
                 flash(f"Unfortunately, the bartender can't proceed mixin' the {m_drink.name}!", category="danger")
