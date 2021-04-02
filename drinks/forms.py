@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import Length, EqualTo, Email, DataRequired, ValidationError
-from market.models import User
+from drinks.models import User
 
 class RegisterForm(FlaskForm):
 
@@ -28,6 +28,3 @@ class LoginForm(FlaskForm):
 
 class MixDrinkForm(FlaskForm):
     submit = SubmitField(label='MIX IT!')
-
-class SellItemForm(FlaskForm):
-    submit = SubmitField(label='Sell Item!')

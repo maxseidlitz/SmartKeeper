@@ -1,8 +1,8 @@
-from market import app
+from drinks import app
 from flask import render_template, redirect, url_for, flash, request
-from market.models import User, Drink, Ingredient, Map
-from market.forms import RegisterForm, LoginForm, MixDrinkForm
-from market import db
+from drinks.models import User, Drink, Ingredient, Map
+from drinks.forms import RegisterForm, LoginForm, MixDrinkForm
+from drinks import db
 from flask_login import login_user, logout_user, login_required, current_user
 
 @app.route("/")
@@ -11,33 +11,27 @@ def home_page():
     return render_template("home.html")
 
 
-@app.route("/market", methods=["GET", "POST"]) # drinks
+@app.route("/drinks", methods=["GET", "POST"])
 @login_required
-def market_page(): #drinks_page
+def drinks_page():
     mix_form = MixDrinkForm()
-    #selling_form = SellItemForm()
     if request.method == "POST":
-        #Purchase Item
+        # Mix Drink
         mixed_drink = request.form.get("purchased_drink")
         m_drink = Drink.query.filter_by(name=mixed_drink).first()
         if m_drink:
-            if current_user.can_purchase(m_drink):
-                #p_item_object.buy(current_user)
-                #try:
+            # if drink AND ingredients are available
 
                 flash(f"Congratulations! Your drink {m_drink.name} will be mixed!", category="success")
 
                 m_drink.mix_drink()
-                
-                return redirect(url_for('market_page'))
+
+                return redirect(url_for('drinks_page'))
     
     if request.method == "GET":
         drinks = Drink.query.order_by(Drink.id.asc()).all()
-        list = db.session.query(Drink, Ingredient, Map).filter(Drink.id == Map.drinkID).filter(Map.ingredientID == Ingredient.id).order_by(Drink.id.asc()).all()  
-
-        #items = Item.query.filter_by(owner=None)
-        #owned_items= Item.query.filter_by(owner=current_user.id)
-        return render_template("market.html", list=list, drinks=drinks, mix_form=mix_form) # drinks.html | owned_items=owned_items, items=items, selling_Form=selling_Form
+        list = db.session.query(Drink, Ingredient, Map).filter(Drink.id == Map.drinkID).filter(Map.ingredientID == Ingredient.id).order_by(Drink.id.asc()).all()
+        return render_template("drinks.html", list=list, drinks=drinks, mix_form=mix_form)
 
 @app.route("/register", methods=["GET", "POST"])
 def register_page():
@@ -48,7 +42,7 @@ def register_page():
         db.session.commit()
         login_user(user_to_create)
         flash(f"Account created successfully! You are now logeed in as: {user_to_create.username}", category="success")
-        return redirect(url_for("market_page"))
+        return redirect(url_for("drinks_page"))
     if form.errors != {}: #wenn keine fehler drin sind von der validation
         for err_msg in form.errors.values():
             flash(f"There was an error with creating a user: {err_msg}", category="danger")
@@ -63,7 +57,7 @@ def login_page():
         if attempted_user and attempted_user.check_password_correction(attempted_password=form.password.data):
             login_user(attempted_user)
             flash(f"Success! You are logged in as: {attempted_user.username}", category="success")
-            return redirect(url_for("market_page"))
+            return redirect(url_for("drinks_page"))
         else:
             flash("Username and Password are not match! Please try again!", category="danger")
 
