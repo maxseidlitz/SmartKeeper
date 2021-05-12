@@ -1,7 +1,7 @@
 from drinks import app
 from flask import render_template, redirect, url_for, flash, request
 from drinks.models import User, Drink, Ingredient, Map
-from drinks.forms import RegisterForm, LoginForm, MixDrinkForm
+from drinks.forms import RegisterForm, LoginForm, MixDrinkForm, AddDrinkForm
 from drinks import db
 from flask_login import login_user, logout_user, login_required, current_user
 
@@ -15,23 +15,33 @@ def home_page():
 @login_required
 def drinks_page():
     mix_form = MixDrinkForm()
+    addDrink_form = AddDrinkForm()
     if request.method == "POST":
-        # Mix Drink
-        mixed_drink = request.form.get("purchased_drink")
-        m_drink = Drink.query.filter_by(name=mixed_drink).first()
-        if m_drink:
-            # if drink AND ingredients are available
 
-                flash(f"Congratulations! Your drink {m_drink.name} will be mixed!", category="success")
+        if addDrink_form.submit_AddDrink.data and addDrink_form.validate(): # notice the submit button of specific form
+            drink_to_create = Drink(name=addDrink_form.name.data, description=addDrink_form.description.data, alc_percentage=addDrink_form.alc_percentage.data)
+            db.session.add(drink_to_create)
+            db.session.commit()
+            # map_ratio = 
+            return redirect(url_for("drinks_page"))
 
-                m_drink.mix_drink()
+        if mix_form.submit_MixDrink.data and mix_form.validate():
+            # Mix Drink
+            mixed_drink = request.form.get("purchased_drink")
+            m_drink = Drink.query.filter_by(name=mixed_drink).first()
+            if m_drink:
+                # if drink AND ingredients are available
 
-                return redirect(url_for('drinks_page'))
+                    flash(f"Congratulations! Your drink {m_drink.name} will be mixed!", category="success")
+
+                    m_drink.mix_drink()
+
+                    return redirect(url_for('drinks_page'))
     
     if request.method == "GET":
         drinks = Drink.query.order_by(Drink.id.asc()).all()
         list = db.session.query(Drink, Ingredient, Map).filter(Drink.id == Map.drinkID).filter(Map.ingredientID == Ingredient.id).order_by(Drink.id.asc()).all()
-        return render_template("drinks.html", list=list, drinks=drinks, mix_form=mix_form)
+        return render_template("drinks.html", list=list, drinks=drinks, mix_form=mix_form, addDrink_form=addDrink_form)
 
 @app.route("/register", methods=["GET", "POST"])
 def register_page():

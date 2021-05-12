@@ -50,7 +50,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="ModalLabel">
-                    <!-- -->
+                    <!-- Caption -->
                     {{ drink.name }}
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -70,7 +70,68 @@
                     </h6>
                     <br>
                     <input id="purchased_drink" name="purchased_drink" type="hidden" value="{{ drink.name }}">
-                    {{ mix_form.submit(class='btn btn-outline-success btn-block') }}
+                    {{ mix_form.submit_MixDrink(class='btn btn-outline-success btn-block') }}
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Adding New Drink -->
+<div class="modal fade" id="Modal-AddingDrink" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel">
+                    <!-- Caption -->
+                    Adding a new Drink
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method='POST'>
+                    {{ addDrink_form.hidden_tag() }}
+
+                    <h4 class='text-center'>
+                        Here you can add a new Drink to the list
+                    </h4>
+                    <br>
+                    {{ addDrink_form.name.label() }}
+                    {{ addDrink_form.name(class='form-control', placeholder='Name') }}
+            
+                    {{ addDrink_form.description.label() }}
+                    {{ addDrink_form.description(class='form-control', placeholder='Description') }}
+            
+                    {{ addDrink_form.alc_percentage.label() }}
+                    {{ addDrink_form.alc_percentage(class='form-control', placeholder='Alcohol Percentage') }}
+                    
+                    {{ addDrink_form.ingredientChoice_1.label() }}
+                    {{ addDrink_form.ingredientChoice_1(class='form-control', placeholder='First Ingredient') }}
+
+                    {{ addDrink_form.ratio_1.label() }}
+                    {{ addDrink_form.ratio_1(class='form-control', placeholder='Percentage of ratio in drink') }}
+
+                    {{ addDrink_form.ingredientChoice_2.label() }}
+                    {{ addDrink_form.ingredientChoice_2(class='form-control', placeholder='Second Ingredient') }}
+
+                    {{ addDrink_form.ratio_2.label() }}
+                    {{ addDrink_form.ratio_2(class='form-control', placeholder='Percentage of ratio in drink') }}
+                    
+                    {{ addDrink_form.ingredientChoice_3.label() }}
+                    {{ addDrink_form.ingredientChoice_3(class='form-control', placeholder='Third Ingredient') }}
+
+                    {{ addDrink_form.ratio_3.label() }}
+                    {{ addDrink_form.ratio_3(class='form-control', placeholder='Percentage of ratio in drink') }}
+                    <br>
+                    <input id="purchased_drink" name="purchased_drink" type="hidden" value="{{ drink.name }}">
+                    {{ addDrink_form.submit_AddDrink(class='btn btn-outline-success btn-block') }}
                 </form>
             </div>
             <div class="modal-footer">

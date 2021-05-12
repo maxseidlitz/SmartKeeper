@@ -1,7 +1,9 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import Length, EqualTo, Email, DataRequired, ValidationError
-from drinks.models import User
+from wtforms import StringField, PasswordField, SubmitField, IntegerField, TextAreaField, SelectField
+from wtforms.validators import Length, EqualTo, Email, DataRequired, ValidationError, NumberRange
+from sqlalchemy import asc
+from drinks import db
+from drinks.models import User, Ingredient
 
 class RegisterForm(FlaskForm):
 
@@ -19,12 +21,27 @@ class RegisterForm(FlaskForm):
     email_address = StringField(label='Email Address:', validators=[Email(), DataRequired()])
     password1 = PasswordField(label='Password:', validators=[Length(min=6), DataRequired()])
     password2 = PasswordField(label='Confirm Password:', validators=[EqualTo('password1'), DataRequired()])
-    submit = SubmitField(label='Create Account')
+    submit_CreateAcc = SubmitField(label='Create Account')
 
 class LoginForm(FlaskForm):
     username = StringField(label='User Name:', validators=[DataRequired()])
     password = StringField(label='Password:', validators=[DataRequired()])
-    submit = SubmitField(label='Sign In')
+    submit_LogIn = SubmitField(label='Sign In')
 
 class MixDrinkForm(FlaskForm):
-    submit = SubmitField(label='MIX IT!')
+    submit_MixDrink = SubmitField(label='MIX IT!')
+
+class AddDrinkForm(FlaskForm):
+    name = StringField(label='Name:', validators=[Length(min=2, max=30), DataRequired()])
+    description = TextAreaField(label='Description:', validators=[Length(min=2, max=1024), DataRequired()])
+    alc_percentage = IntegerField(label='Alcohol Percentage:', validators=[NumberRange(min=0, max=3)])
+    choice = db.session.query(Ingredient.name).all()
+    choices = [value for value, in choice]
+
+    ingredientChoice_1 = SelectField(label='Ingredient 1', choices=choices, validators=[DataRequired()]) 
+    ratio_1 = IntegerField(label='Ratio 1:', validators=[NumberRange(min=0, max=3), DataRequired()])
+    ingredientChoice_2 = SelectField(label='Ingredient 2', choices=choices, validators=[DataRequired()])
+    ratio_2 = IntegerField(label='Ratio 2:', validators=[NumberRange(min=0, max=3)])
+    ingredientChoice_3 = SelectField(label='Ingredient 3', choices=choices, validators=[DataRequired()])
+    ratio_3 = IntegerField(label='Ratio 3:', validators=[NumberRange(min=0, max=3)])
+    submit_AddDrink = SubmitField(label='Add Drink')
