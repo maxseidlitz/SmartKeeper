@@ -108,9 +108,6 @@
             
                     {{ addDrink_form.description.label() }}
                     {{ addDrink_form.description(class='form-control', placeholder='Description') }}
-            
-                    {{ addDrink_form.alc_percentage.label() }}
-                    {{ addDrink_form.alc_percentage(class='form-control', placeholder='Alcohol Percentage') }}
                     
                     {{ addDrink_form.ingredientChoice_1.label() }}
                     {{ addDrink_form.ingredientChoice_1(class='form-control', placeholder='First Ingredient') }}
@@ -130,8 +127,52 @@
                     {{ addDrink_form.ratio_3.label() }}
                     {{ addDrink_form.ratio_3(class='form-control', placeholder='Percentage of ratio in drink') }}
                     <br>
-                    <input id="purchased_drink" name="purchased_drink" type="hidden" value="{{ drink.name }}">
+                    <input id="added_drink" name="added_drink" type="hidden" value="{{ drink.name }}">
                     {{ addDrink_form.submit_AddDrink(class='btn btn-outline-success btn-block') }}
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Adding New Drink -->
+<div class="modal fade" id="Modal-AddingIngredient" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel">
+                    <!-- Caption -->
+                    Adding a new Ingredient
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method='POST'>
+                    {{ addIngredient_form.hidden_tag() }}
+
+                    <h4 class='text-center'>
+                        Here you can add a new Ingredient to the list
+                    </h4>
+                    <br>
+                    {{ addIngredient_form.name.label() }}
+                    {{ addIngredient_form.name(class='form-control', placeholder='Name') }}
+            
+                    {{ addIngredient_form.percentage.label() }}
+                    {{ addIngredient_form.percentage(class='form-control', placeholder='...') }}
+                    
+                    {{ addIngredient_form.pump.label() }}
+                    {{ addIngredient_form.pump(class='form-control', placeholder='GPIO-Pin Number') }}
+
+                    <br>
+                    <input id="added_ingredient" name="added_ingredient" type="hidden">
+                    {{ addIngredient_form.submit_AddIngredient(class='btn btn-outline-success btn-block') }}
                 </form>
             </div>
             <div class="modal-footer">

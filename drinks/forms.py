@@ -34,14 +34,17 @@ class MixDrinkForm(FlaskForm):
 class AddDrinkForm(FlaskForm):
     name = StringField(label='Name:', validators=[Length(min=2, max=30), DataRequired()])
     description = TextAreaField(label='Description:', validators=[Length(min=2, max=1024), DataRequired()])
-    alc_percentage = IntegerField(label='Alcohol Percentage:', validators=[NumberRange(min=0, max=3)])
-    choice = db.session.query(Ingredient.name).all()
-    choices = [value for value, in choice]
 
-    ingredientChoice_1 = SelectField(label='Ingredient 1', choices=choices, validators=[DataRequired()]) 
+    ingredientChoice_1 = SelectField(u'Ingredient', coerce=str, validators=[DataRequired()]) 
     ratio_1 = IntegerField(label='Ratio 1:', validators=[NumberRange(min=0, max=3), DataRequired()])
-    ingredientChoice_2 = SelectField(label='Ingredient 2', choices=choices, validators=[DataRequired()])
+    ingredientChoice_2 = SelectField(u'Ingredient', coerce=str, validators=[DataRequired()])
     ratio_2 = IntegerField(label='Ratio 2:', validators=[NumberRange(min=0, max=3)])
-    ingredientChoice_3 = SelectField(label='Ingredient 3', choices=choices, validators=[DataRequired()])
+    ingredientChoice_3 = SelectField(u'Ingredient', coerce=str, validators=[DataRequired()])
     ratio_3 = IntegerField(label='Ratio 3:', validators=[NumberRange(min=0, max=3)])
     submit_AddDrink = SubmitField(label='Add Drink')
+
+class AddIngredientForm(FlaskForm):
+    name = StringField(label='Name:', validators=[Length(min=2, max=30), DataRequired()])
+    percentage = IntegerField(label='Alcohol Percentage:', validators=[NumberRange(min=0, max=3), DataRequired()])
+    pump = SelectField(label='Pump:', choices=['17', '27', '22', '23', '24', '25', '5', '6', '16', '26'], validators=[DataRequired()])
+    submit_AddIngredient = SubmitField(label='Add Ingredient')

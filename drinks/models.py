@@ -54,7 +54,7 @@ class Drink(db.Model):
         
 class Ingredient(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
-    name = db.Column(db.String(length=30), nullable=False)
+    name = db.Column(db.String(length=30), nullable=False, unique=True)
     percentage = db.Column(db.Integer(), nullable=False)
     pump = db.Column(db.Integer(), nullable=False)
     mapping = db.relationship("Map", backref="ingredient", lazy=True)
