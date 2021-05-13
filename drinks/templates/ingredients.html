@@ -1,23 +1,15 @@
 {% extends 'base.html' %}
 {% block title %}
-Drink List Page
+Ingredient List Page
 {% endblock %}
 {% block content %}
 
 
 <div class="row" style="margin-top:20px; margin-left:20px">
   <div class="col-8">
-    <h2>Available Drinks from the Bartender</h2>
-    <p>Click on one of the Drinks to start drinking!</p>
+    <h2>Available Ingredients for the Bartender</h2>
+    
     <br>
-
-    <button class="btn btn-outline btn-info mx-2" data-toggle="modal" data-target="#Modal-AddingDrink" style="float: right;">
-      <span aria-hidden="true">&#43; Drink</span>
-    </button>
-
-    <button class="btn btn-outline btn-info mx-2" data-toggle="modal" data-target="#Modal-AddingIngredient" style="float: right;">
-      <span aria-hidden="true">&#43; Ingredient</span>
-    </button>
 
     <table class="table table-hover table-dark">
       <thead>
@@ -25,7 +17,8 @@ Drink List Page
           <!-- Your Columns HERE -->
           <th scope="col">ID</th>
           <th scope="col">Name</th>
-          <th scope="col">Description</th>
+          <th scope="col">Percentage</th>
+          <th scope="col">Pumpe</th>
           <th scope="col">Options</th>
         </tr>
       </thead>
@@ -42,8 +35,6 @@ Drink List Page
               data-target="#Modal-MoreInfo-{{ drink.id }}">More Info</button>
             <button class="btn btn-outline btn-success" data-toggle="modal"
               data-target="#Modal-PurchaseConfirm-{{ drink.id }}">Produce this Drink</button>
-            <button class="btn btn-outline btn-danger" data-toggle="modal"
-              data-target="#Modal-DeleteDrinkConfirm-{{ drink.id }}">Delete</button>
           </td>
         </tr>
         {% endfor %}

@@ -35,11 +35,11 @@ class AddDrinkForm(FlaskForm):
     name = StringField(label='Name:', validators=[Length(min=2, max=30), DataRequired()])
     description = TextAreaField(label='Description:', validators=[Length(min=2, max=1024), DataRequired()])
 
-    ingredientChoice_1 = SelectField(u'Ingredient', coerce=str, validators=[DataRequired()]) 
+    ingredientChoice_1 = SelectField(u'Ingredient 1', coerce=str, validators=[DataRequired()]) 
     ratio_1 = IntegerField(label='Ratio 1:', validators=[NumberRange(min=0, max=3), DataRequired()])
-    ingredientChoice_2 = SelectField(u'Ingredient', coerce=str, validators=[DataRequired()])
+    ingredientChoice_2 = SelectField(u'Ingredient 2', coerce=str, validators=[DataRequired()])
     ratio_2 = IntegerField(label='Ratio 2:', validators=[NumberRange(min=0, max=3)])
-    ingredientChoice_3 = SelectField(u'Ingredient', coerce=str, validators=[DataRequired()])
+    ingredientChoice_3 = SelectField(u'Ingredient 3', coerce=str, validators=[DataRequired()])
     ratio_3 = IntegerField(label='Ratio 3:', validators=[NumberRange(min=0, max=3)])
     submit_AddDrink = SubmitField(label='Add Drink')
 
@@ -48,3 +48,7 @@ class AddIngredientForm(FlaskForm):
     percentage = IntegerField(label='Alcohol Percentage:', validators=[NumberRange(min=0, max=3), DataRequired()])
     pump = SelectField(label='Pump:', choices=['17', '27', '22', '23', '24', '25', '5', '6', '16', '26'], validators=[DataRequired()])
     submit_AddIngredient = SubmitField(label='Add Ingredient')
+
+class DeleteDrinkForm(FlaskForm):
+    name = StringField(label='Name:', validators=[Length(min=2, max=30), DataRequired()])
+    submit_DeleteDrink = SubmitField(label='Delete')

@@ -1,7 +1,7 @@
 from drinks import app
 from flask import render_template, redirect, url_for, flash, request
 from drinks.models import User, Drink, Ingredient, Map
-from drinks.forms import RegisterForm, LoginForm, MixDrinkForm, AddDrinkForm, AddIngredientForm
+from drinks.forms import RegisterForm, LoginForm, MixDrinkForm, AddDrinkForm, AddIngredientForm, DeleteDrinkForm
 from drinks import db
 from flask_login import login_user, logout_user, login_required, current_user
 
@@ -16,12 +16,15 @@ def home_page():
 def drinks_page():
     mix_form = MixDrinkForm()
     addIngredient_form = AddIngredientForm()
+    deleteDrink_form = DeleteDrinkForm()
 
     _list = db.session.query(Ingredient.name).all()
     list = [value for value, in _list]
 
     addDrink_form = AddDrinkForm()
     addDrink_form.ingredientChoice_1.choices = list
+    addDrink_form.ingredientChoice_2.choices = list
+    addDrink_form.ingredientChoice_3.choices = list
 
     if request.method == "POST":
 
@@ -72,6 +75,14 @@ def drinks_page():
                     m_drink.mix_drink()
 
                     return redirect(url_for('drinks_page'))
+
+        if deleteDrink_form.submit_DeleteDrink.data:
+            drink = Drink.query.filter_by(name=deleteDrink_form.name.data).first()
+            Map.query.filter_by(drinkID=drink.id).delete()
+            Drink.query.filter_by(name=deleteDrink_form.name.data).delete()
+            db.session.commit()
+            return redirect(url_for("drinks_page"))
+
         if addIngredient_form.errors or addDrink_form or mix_form != {}: #wenn keine fehler drin sind von der validation
             for err_msg in addIngredient_form.errors.values():
                 flash(f"There was an error with creating an ingredient: {err_msg}", category="danger")
@@ -81,11 +92,14 @@ def drinks_page():
 
             for err_msg in mix_form.errors.values():
                 flash(f"There was an error with mixing the drink: {err_msg}", category="danger")
+            
+            for err_msg in deleteDrink_form.errors.values():
+                flash(f"There was an error with deleting the drink: {err_msg}", category="danger")
 
     if request.method == "GET":
         drinks = Drink.query.order_by(Drink.id.asc()).all()
         list = db.session.query(Drink, Ingredient, Map).filter(Drink.id == Map.drinkID).filter(Map.ingredientID == Ingredient.id).order_by(Drink.id.asc()).all()
-        return render_template("drinks.html", list=list, drinks=drinks, mix_form=mix_form, addDrink_form=addDrink_form, addIngredient_form=addIngredient_form)
+        return render_template("drinks.html", list=list, drinks=drinks, mix_form=mix_form, addDrink_form=addDrink_form, addIngredient_form=addIngredient_form, deleteDrink_form=deleteDrink_form)
 
 @app.route("/register", methods=["GET", "POST"])
 def register_page():
