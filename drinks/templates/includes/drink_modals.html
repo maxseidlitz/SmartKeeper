@@ -7,7 +7,7 @@
     }
 </style>
 
-<!-- More Info -->
+<!-- Drink More Info -->
 <div class="modal fade" id="Modal-MoreInfo-{{ drink.id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog">
@@ -183,7 +183,7 @@
     </div>
 </div>
 
-<!-- Delete Confirmation -->
+<!-- Delete Drink Confirmation -->
 <div class="modal fade" id="Modal-DeleteDrinkConfirm-{{ drink.id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog">
@@ -203,13 +203,48 @@
 
                     Do you really want to delete {{ drink.name }}?
                     <br>
-                    To delete the Drink type <b>{{ drink.name }}</b>.
+                    To delete the Drink type <b>{{ drink.name }}</b>
                     <br>
                     {{ deleteDrink_form.name.label() }}
                     {{ deleteDrink_form.name(class='form-control', placeholder='Name') }}
                     <br>
                     <input id="deleted_drink" name="deleted_drink" type="hidden">
                     {{ deleteDrink_form.submit_DeleteDrink(class='btn btn-outline-danger btn-block') }}
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Wash Confirm -->
+<div class="modal fade" id="Modal-Wash" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel">
+                    <!-- Caption -->
+                    Wash?
+
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method='POST'>
+                    {{ wash_form.hidden_tag() }}
+
+                    <h4 class='text-center'>
+                        Are you sure you want to wash all pumps?
+                    </h4>
+                    <br>
+                    <input id="wash" name="wash" type="hidden">
+                    {{ wash_form.submit_Wash(class='btn btn-outline-success btn-block') }}
                 </form>
             </div>
             <div class="modal-footer">

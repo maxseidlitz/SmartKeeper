@@ -39,9 +39,8 @@ class Drink(db.Model):
     def __repr__(self):
         return f'Drink {self.id}, {self.name}, {self.description}'
 
-    #def mix_drink(self):
+    # def mix_drink(self):
        # ingList = db.session.query(Ingredient.pump, Ingredient.name, Map.ratio).filter(Map.drinkID==self.id).filter(Ingredient.id==Map.ingredientID).all()
-       # print(ingList)
        # for ing in ingList:
        #     GPIO.setup(ing[0], GPIO.OUT)
 
@@ -51,7 +50,19 @@ class Drink(db.Model):
        #     GPIO.output(ing[0], GPIO.LOW)
        #     time.sleep(waitTime)
        #     GPIO.output(ing[0], GPIO.HIGH)
-        
+    
+    # def wash_machine(self):
+        # for ing in ingList:
+        #     GPIO.setup(ing[0], GPIO.OUT)
+
+        # pumpList = ['17', '27', '22', '23', '24', '25', '5', '6', '16', '26']
+        # for p in pumplist:
+        #     max_ml = 100
+        #     waitTime = max_ml / FLOW_RATE
+        #     GPIO.output(p, GPIO.LOW)
+        #     time.sleep(waitTime)
+        #     GPIO.output(p, GPIO.HIGH)
+
 class Ingredient(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(length=30), nullable=False, unique=True)

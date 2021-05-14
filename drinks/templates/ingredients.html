@@ -24,17 +24,18 @@ Ingredient List Page
       </thead>
       <tbody>
         <!-- Your rows inside the table HERE: -->
-        {% for drink in drinks %}
-        {% include 'includes/drink_modals.html' %}
+        {% for ingredient in ingredients %}
+        {% include 'includes/ingredient_modals.html' %}
         <tr>
-          <td>{{ drink.id }}</td>
-          <td>{{ drink.name }}</td>
-          <td>{{ drink.description }}</td>
+          <td>{{ ingredient.id }}</td>
+          <td>{{ ingredient.name }}</td>
+          <td>{{ ingredient.percentage }}</td>
+          <td>{{ ingredient.pump }}</td>
           <td>
             <button class="btn btn-outline btn-info" data-toggle="modal"
-              data-target="#Modal-MoreInfo-{{ drink.id }}">More Info</button>
-            <button class="btn btn-outline btn-success" data-toggle="modal"
-              data-target="#Modal-PurchaseConfirm-{{ drink.id }}">Produce this Drink</button>
+              data-target="#Modal-IngredientMoreInfo-{{ ingredient.id }}">More Info</button>
+            <button class="btn btn-outline btn-danger" data-toggle="modal"
+              data-target="#Modal-DeleteIngredientConfirm-{{ ingredient.id }}" disabled>Delete</button>
           </td>
         </tr>
         {% endfor %}

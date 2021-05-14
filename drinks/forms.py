@@ -31,6 +31,9 @@ class LoginForm(FlaskForm):
 class MixDrinkForm(FlaskForm):
     submit_MixDrink = SubmitField(label='MIX IT!')
 
+class WashForm(FlaskForm):
+    submit_Wash = SubmitField(label='Wash it!')
+
 class AddDrinkForm(FlaskForm):
     name = StringField(label='Name:', validators=[Length(min=2, max=30), DataRequired()])
     description = TextAreaField(label='Description:', validators=[Length(min=2, max=1024), DataRequired()])
@@ -52,3 +55,7 @@ class AddIngredientForm(FlaskForm):
 class DeleteDrinkForm(FlaskForm):
     name = StringField(label='Name:', validators=[Length(min=2, max=30), DataRequired()])
     submit_DeleteDrink = SubmitField(label='Delete')
+
+class DeleteIngredientForm(FlaskForm):
+    name = StringField(label='Name:', validators=[Length(min=2, max=30), DataRequired()])
+    submit_DeleteIngredient = SubmitField(label='Delete')

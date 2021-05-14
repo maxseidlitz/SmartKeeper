@@ -1,0 +1,73 @@
+<style>
+    .modal-content {
+        background-color: #212121
+    }
+    a {
+        text-align: center;
+    }
+</style>
+
+<!-- Ingredient More Info -->
+<div class="modal fade" id="Modal-IngredientMoreInfo-{{ ingredient.id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel">
+                    <!-- -->
+                    {{ ingredient.name }}
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <br>                  
+                    <h5>Percentage:</h5>
+                    <a>{{ ingredient.percentage }}</a>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Ingredient Confirmation -->
+<div class="modal fade" id="Modal-DeleteIngredientConfirm-{{ ingredient.id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel">
+                    <!-- Caption -->
+                    Delete?
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method='POST'>
+                    {{ deleteIngredient_form.hidden_tag() }}
+
+                    Do you really want to delete {{ ingredient.name }}?
+                    <br>
+                    To delete the Ingredient type <b>{{ ingredient.name }}</b>
+                    <br>
+                    {{ deleteIngredient_form.name.label() }}
+                    {{ deleteIngredient_form.name(class='form-control', placeholder='Name') }}
+                    <br>
+                    <input id="deleted_ingredient" name="deleted_ingredient" type="hidden">
+                    {{ deleteIngredient_form.submit_DeleteIngredient(class='btn btn-outline-danger btn-block') }}
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
