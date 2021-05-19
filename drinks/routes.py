@@ -5,6 +5,10 @@ from drinks.forms import RegisterForm, LoginForm, MixDrinkForm, AddDrinkForm, Ad
 from drinks import db
 from flask_login import login_user, logout_user, login_required, current_user
 
+from drinks.pump import wash
+
+#import RPi.GPIO as GPIO
+
 @app.route("/")
 @app.route("/home")
 def home_page():
@@ -89,7 +93,7 @@ def drinks_page():
             return redirect(url_for("drinks_page"))
 
         if wash_form.submit_Wash.data:
-            drinks.models.Drink.wash_machine
+            wash.wash_machine()
 
             return redirect(url_for("drinks_page"))
 

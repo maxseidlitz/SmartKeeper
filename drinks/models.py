@@ -1,13 +1,14 @@
 from drinks import db, login_manager
 from drinks import bcrypt
 from flask_login import UserMixin
-#import RPi.GPIO as GPIO
+
 import time
+#import RPi.GPIO as GPIO
 
 #GPIO.setmode(GPIO.BCM)
 FLOW_RATE = 125/60
 MAX_TIME = 0
-GLAS = 300
+GLAS = 250
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -40,28 +41,16 @@ class Drink(db.Model):
         return f'Drink {self.id}, {self.name}, {self.description}'
 
     # def mix_drink(self):
-       # ingList = db.session.query(Ingredient.pump, Ingredient.name, Map.ratio).filter(Map.drinkID==self.id).filter(Ingredient.id==Map.ingredientID).all()
-       # for ing in ingList:
-       #     GPIO.setup(ing[0], GPIO.OUT)
-
-       # for ing in ingList:
-       #     max_ml = GLAS * ing[2] / 100 # 100 ml von 300 ml
-       #     waitTime = max_ml / FLOW_RATE
-       #     GPIO.output(ing[0], GPIO.LOW)
-       #     time.sleep(waitTime)
-       #     GPIO.output(ing[0], GPIO.HIGH)
-    
-    # def wash_machine(self):
+        # ingList = db.session.query(Ingredient.pump, Ingredient.name, Map.ratio).filter(Map.drinkID==self.id).filter(Ingredient.id==Map.ingredientID).all()
         # for ing in ingList:
         #     GPIO.setup(ing[0], GPIO.OUT)
 
-        # pumpList = ['17', '27', '22']
-        # for p in pumplist:
-        #     max_ml = 100
+        # for ing in ingList:
+        #     max_ml = GLAS * ing[2] / 100 # 100 ml von 300 ml
         #     waitTime = max_ml / FLOW_RATE
-        #     GPIO.output(p, GPIO.LOW)
+        #     GPIO.output(ing[0], GPIO.LOW)
         #     time.sleep(waitTime)
-        #     GPIO.output(p, GPIO.HIGH)
+        #     GPIO.output(ing[0], GPIO.HIGH)
 
 class Ingredient(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
