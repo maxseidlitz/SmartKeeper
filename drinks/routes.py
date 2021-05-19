@@ -23,6 +23,8 @@ def drinks_page():
     list = [value for value, in _list]
 
     addDrink_form = AddDrinkForm()
+
+    # if new ingredient was added -> its new integrated
     addDrink_form.ingredientChoice_1.choices = list
     addDrink_form.ingredientChoice_2.choices = list
     addDrink_form.ingredientChoice_3.choices = list
@@ -34,25 +36,27 @@ def drinks_page():
             db.session.add(drink_to_create)
             db.session.commit()
             
-            r1 = addDrink_form.ratio_1.data
-            r2 = addDrink_form.ratio_2.data
-            r3 = addDrink_form.ratio_3.data
+            if addDrink_form.ratio_1.data:
+                r1 = addDrink_form.ratio_1.data
+                i1 = addDrink_form.ingredientChoice_1.data
+                i_1 = db.session.query(Ingredient).filter_by(name=i1).first()
+                map_ratio_1 = Map(ratio=r1,drinkID=drink_to_create.id, ingredientID=i_1.id)
+                db.session.add(map_ratio_1)
 
-            i1 = addDrink_form.ingredientChoice_1.data
-            i2 = addDrink_form.ingredientChoice_2.data
-            i3 = addDrink_form.ingredientChoice_3.data
+            if addDrink_form.ratio_2.data:
+                r2 = addDrink_form.ratio_2.data
+                i2 = addDrink_form.ingredientChoice_2.data
+                i_2 = db.session.query(Ingredient).filter_by(name=i2).first()
+                map_ratio_2 = Map(ratio=r2,drinkID=drink_to_create.id, ingredientID=i_2.id)
+                db.session.add(map_ratio_2)
 
-            i_1 = db.session.query(Ingredient).filter_by(name=i1).first()
-            i_2 = db.session.query(Ingredient).filter_by(name=i2).first()
-            i_3 = db.session.query(Ingredient).filter_by(name=i3).first()
+            if  addDrink_form.ratio_3.data:
+                r3 = addDrink_form.ratio_3.data
+                i3 = addDrink_form.ingredientChoice_3.data
+                i_3 = db.session.query(Ingredient).filter_by(name=i3).first()
+                map_ratio_3 = Map(ratio=r3,drinkID=drink_to_create.id, ingredientID=i_3.id)
+                db.session.add(map_ratio_3)
 
-            map_ratio_1 = Map(ratio=r1,drinkID=drink_to_create.id, ingredientID=i_1.id)
-            map_ratio_2 = Map(ratio=r2,drinkID=drink_to_create.id, ingredientID=i_2.id)
-            map_ratio_3 = Map(ratio=r3,drinkID=drink_to_create.id, ingredientID=i_3.id)
-            
-            db.session.add(map_ratio_1)
-            db.session.add(map_ratio_2)
-            db.session.add(map_ratio_3)
             db.session.commit()
             
             return redirect(url_for("drinks_page"))

@@ -55,7 +55,7 @@ class Drink(db.Model):
         # for ing in ingList:
         #     GPIO.setup(ing[0], GPIO.OUT)
 
-        # pumpList = ['17', '27', '22', '23', '24', '25', '5', '6', '16', '26']
+        # pumpList = ['17', '27', '22']
         # for p in pumplist:
         #     max_ml = 100
         #     waitTime = max_ml / FLOW_RATE
