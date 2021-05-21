@@ -3,9 +3,9 @@ from drinks import bcrypt
 from flask_login import UserMixin
 
 import time
-#import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 
-#GPIO.setmode(GPIO.BCM)
+GPIO.setmode(GPIO.BCM)
 FLOW_RATE = 125/60
 MAX_TIME = 0
 GLAS = 250
@@ -40,17 +40,17 @@ class Drink(db.Model):
     def __repr__(self):
         return f'Drink {self.id}, {self.name}, {self.description}'
 
-    # def mix_drink(self):
-        # ingList = db.session.query(Ingredient.pump, Ingredient.name, Map.ratio).filter(Map.drinkID==self.id).filter(Ingredient.id==Map.ingredientID).all()
-        # for ing in ingList:
-        #     GPIO.setup(ing[0], GPIO.OUT)
+    def mix_drink(self):
+        ingList = db.session.query(Ingredient.pump, Ingredient.name, Map.ratio).filter(Map.drinkID==self.id).filter(Ingredient.id==Map.ingredientID).all()
+        for ing in ingList:
+            GPIO.setup(ing[0], GPIO.OUT)
 
-        # for ing in ingList:
-        #     max_ml = GLAS * ing[2] / 100 # 100 ml von 300 ml
-        #     waitTime = max_ml / FLOW_RATE
-        #     GPIO.output(ing[0], GPIO.LOW)
-        #     time.sleep(waitTime)
-        #     GPIO.output(ing[0], GPIO.HIGH)
+        for ing in ingList:
+            max_ml = GLAS * ing[2] / 100 # 100 ml von 300 ml
+            waitTime = max_ml / FLOW_RATE
+            GPIO.output(ing[0], GPIO.LOW)
+            time.sleep(waitTime)
+            GPIO.output(ing[0], GPIO.HIGH)
 
 class Ingredient(db.Model):
     id = db.Column(db.Integer(), primary_key=True)

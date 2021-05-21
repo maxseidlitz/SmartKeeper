@@ -7,8 +7,6 @@ from flask_login import login_user, logout_user, login_required, current_user
 
 from drinks.pump import wash
 
-#import RPi.GPIO as GPIO
-
 @app.route("/")
 @app.route("/home")
 def home_page():
